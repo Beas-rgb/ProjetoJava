@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Restaurante · Sabor & Nota</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #faf7f2;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .navbar {
+            background: rgba(43, 43, 43, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 40px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #d4af37;
+            text-decoration: none;
+        }
+        .navbar-brand:hover {
+            color: #c4a027;
+        }
+        .navbar-brand span {
+            color: white;
+        }
+        .navbar-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .navbar-links a:hover {
+            color: #d4af37;
+        }
+        body {
+            padding-top: 80px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+        }
+        .form-card {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .form-card::before {
+            content: "🍽️";
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.03;
+            bottom: -50px;
+            right: -50px;
+            transform: rotate(-15deg);
+        }
+        .header-form {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .header-form h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            color: #2b2b2b;
+            margin-bottom: 10px;
+        }
+        .header-form p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        .header-form p span {
+            color: #d4af37;
+            font-weight: 600;
+        }
+        .form-section {
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .form-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            color: #2b2b2b;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d4af37;
+            display: inline-block;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2b2b2b;
+            font-weight: 500;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        label i {
+            color: #d4af37;
+            margin-right: 5px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e8e0d5;
+            border-radius: 12px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            background: #fcf9f5;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: #d4af37;
+            outline: none;
+            background: white;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.1);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .itens-section {
+            background: #fcf9f5;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        .item-row {
+            display: grid;
+            grid-template-columns: 1.2fr 1.5fr 0.8fr 0.8fr 0.3fr;
+            gap: 15px;
+            align-items: start;
+            margin-bottom: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+            border: 1px solid #e8e0d5;
+        }
+        .item-row:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .item-row input, .item-row textarea {
+            background: #fcf9f5;
+            border: 1px solid #e8e0d5;
+            padding: 10px;
+        }
+        .item-row textarea {
+            height: 80px;
+        }
+        .estrela-input {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            align-items: center;
+            background: #fcf9f5;
+            padding: 8px;
+            border-radius: 30px;
+            border: 1px solid #e8e0d5;
+        }
+        .estrela-input label {
+            font-size: 1.8em;
+            color: #ddd;
+            cursor: pointer;
+            margin: 0;
+            transition: all 0.2s ease;
+        }
+        .estrela-input input {
+            display: none;
+        }
+        .estrela-input input:checked + label {
+            color: #d4af37;
+            transform: scale(1.1);
+        }
+        .estrela-input label:hover {
+            color: #d4af37;
+            transform: scale(1.2);
+        }
+        .remove-item {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            align-self: center;
+        }
+        .remove-item:hover {
+            background: #ff5252;
+            transform: rotate(90deg);
+        }
+        .add-item {
+            background: #d4af37;
+            color: #2b2b2b;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 30px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .add-item:hover {
+            background: #c4a027;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .btn {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-primary {
+            background: #2b2b2b;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #3d3d3d;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .btn-secondary {
+            background: #e8e0d5;
+            color: #2b2b2b;
+        }
+        .btn-secondary:hover {
+            background: #d8d0c5;
+            transform: translateY(-3px);
+        }
+        .mensagem-erro {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .mensagem-sucesso {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .navbar-links a {
+                margin-left: 15px;
+                margin-right: 15px;
+            }
+            body {
+                padding-top: 120px;
+            }
+            .form-card {
+                padding: 30px 20px;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            .item-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .estrela-input {
+                justify-content: flex-start;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/" class="navbar-brand">Sabor <span>&</span> Nota</a>
+        <div class="navbar-links">
+            <a href="/">Início</a>
+            <a href="/cadastro">Novo Restaurante</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="form-card">
+            <div class="header-form">
+                <a href="/" style="text-decoration: none; color: inherit;">
+                    <h2>Sabor & Nota</h2>
+                </a>
+                <p>Compartilhe sua <span>experiência gastronômica</span></p>
+            </div>
+            
+            <div th:if="${erro}" class="mensagem-erro" th:text="${erro}"></div>
+            <div th:if="${sucesso}" class="mensagem-sucesso" th:text="${sucesso}"></div>
+            
+            <form action="/salvar-completo" method="post" id="formCompleto">
+                <div class="form-section">
+                    <h3>🏠 Dados do Restaurante</h3>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label><i>✧</i> Nome do Restaurante *</label>
+                            <input type="text" name="nome" placeholder="Ex: Outback, Madero, Paris 6" required>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label><i>✧</i> Endereço</label>
+                            <input type="text" name="endereco" placeholder="Rua, número, bairro, cidade">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i>✧</i> Telefone</label>
+                            <input type="text" name="telefone" placeholder="(11) 99999-9999">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i>✧</i> Tipo de Cozinha</label>
+                            <input type="text" name="tipoCozinha" placeholder="Ex: Italiana, Japonesa">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i>✧</i> Preço Médio (R$)</label>
+                            <input type="number" name="precoMedio" step="0.01" min="0" placeholder="75.00">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i>✧</i> URL da Foto</label>
+                            <input type="url" name="fotoUrl" placeholder="https://exemplo.com/foto.jpg">
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label><i>✧</i> Descrição</label>
+                            <textarea name="descricao" rows="3" placeholder="Descreva o ambiente, especialidades, atendimento..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>🍲 Pratos Avaliados</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Adicione os pratos que você experimentou e dê sua nota</p>
+                    
+                    <div class="itens-section">
+                        <div id="itens-container">
+                            <div class="item-row" id="modelo-item" style="display: none;">
+                                <input type="text" placeholder="Nome do prato">
+                                <textarea placeholder="Descrição"></textarea>
+                                <input type="number" step="0.01" min="0" placeholder="Preço">
+                                <input type="hidden" value="3">
+                                <div class="estrela-input">
+                                    <input type="radio" value="1"><label>★</label>
+                                    <input type="radio" value="2"><label>★</label>
+                                    <input type="radio" value="3"><label>★</label>
+                                    <input type="radio" value="4"><label>★</label>
+                                    <input type="radio" value="5"><label>★</label>
+                                </div>
+                                <button type="button" class="remove-item" onclick="removerItem(this)">✕</button>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="add-item" onclick="adicionarItem()">
+                            <span>➕</span> Adicionar Prato
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">✓ Salvar Restaurante</button>
+                    <a href="/" class="btn btn-secondary">↩ Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let itemCount = 0;
+
+        function adicionarItem() {
+            const container = document.getElementById('itens-container');
+            const modelo = document.getElementById('modelo-item');
+            const novoItem = modelo.cloneNode(true);
+            novoItem.style.display = 'grid';
+            novoItem.id = 'item-' + itemCount;
+            
+            const nomeInput = novoItem.querySelector('input[type="text"]');
+            const descTextarea = novoItem.querySelector('textarea');
+            const precoInput = novoItem.querySelector('input[type="number"]');
+            const hiddenNota = novoItem.querySelector('input[type="hidden"]');
+            const radios = novoItem.querySelectorAll('.estrela-input input[type="radio"]');
+            const labels = novoItem.querySelectorAll('.estrela-input label');
+            
+            nomeInput.name = 'itemNome';
+            descTextarea.name = 'itemDescricao';
+            precoInput.name = 'itemPreco';
+            hiddenNota.name = 'itemNota';
+            
+            const nomeBase = 'nota' + itemCount;
+            radios.forEach((radio, index) => {
+                radio.id = nomeBase + '_' + (index + 1);
+                radio.value = index + 1;
+                radio.checked = false;
+                
+                radio.addEventListener('change', function() {
+                    if (this.checked) {
+                        hiddenNota.value = this.value;
+                    }
+                });
+            });
+            
+            labels.forEach((label, index) => {
+                label.htmlFor = nomeBase + '_' + (index + 1);
+            });
+            
+            container.appendChild(novoItem);
+            itemCount++;
+        }
+
+        function removerItem(botao) {
+            const itemRow = botao.closest('.item-row');
+            if (itemRow && itemRow.id !== 'modelo-item') {
+                itemRow.remove();
+            }
+        }
+
+        window.onload = function() {
+            adicionarItem();
+        };
+    </script>
+</body>
+</html>
