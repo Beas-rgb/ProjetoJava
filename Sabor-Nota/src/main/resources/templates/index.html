@@ -1,395 +1,438 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sabor & Nota · Restaurantes</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #faf7f2;
-            color: #2c2c2c;
-        }
-        .navbar {
-            background: rgba(43, 43, 43, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 40px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-        .navbar-brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8em;
-            font-weight: 700;
-            color: #d4af37;
-            text-decoration: none;
-        }
-        .navbar-brand:hover {
-            color: #c4a027;
-        }
-        .navbar-brand span {
-            color: white;
-        }
-        .navbar-links a {
-            color: white;
-            text-decoration: none;
-            margin-left: 30px;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        .navbar-links a:hover {
-            color: #d4af37;
-        }
-        body {
-            padding-top: 80px;
-        }
-        .hero {
-            background: linear-gradient(135deg, #2b2b2b 0%, #3d3d3d 100%);
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: "🍽️";
-            position: absolute;
-            font-size: 200px;
-            opacity: 0.05;
-            bottom: -50px;
-            right: -50px;
-            transform: rotate(-15deg);
-        }
-        .hero::after {
-            content: "🥖";
-            position: absolute;
-            font-size: 180px;
-            opacity: 0.05;
-            top: -70px;
-            left: -30px;
-            transform: rotate(15deg);
-        }
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Montserrat", sans-serif;
+        background-color: #faf7f2;
+        color: #2c2c2c;
+      }
+      .navbar {
+        background: rgba(43, 43, 43, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 15px 40px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      }
+      .navbar-brand {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8em;
+        font-weight: 700;
+        color: #d4af37;
+        text-decoration: none;
+      }
+      .navbar-brand:hover {
+        color: #c4a027;
+      }
+      .navbar-brand span {
+        color: white;
+      }
+      .navbar-links a {
+        color: white;
+        text-decoration: none;
+        margin-left: 30px;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+      .navbar-links a:hover {
+        color: #d4af37;
+      }
+      body {
+        padding-top: 80px;
+      }
+      .hero {
+        background: linear-gradient(135deg, #2b2b2b 0%, #3d3d3d 100%);
+        color: white;
+        padding: 60px 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "🍽️";
+        position: absolute;
+        font-size: 200px;
+        opacity: 0.05;
+        bottom: -50px;
+        right: -50px;
+        transform: rotate(-15deg);
+      }
+      .hero::after {
+        content: "🥖";
+        position: absolute;
+        font-size: 180px;
+        opacity: 0.05;
+        top: -70px;
+        left: -30px;
+        transform: rotate(15deg);
+      }
+      .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+      }
+      .hero h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 4em;
+        font-weight: 700;
+        letter-spacing: -1px;
+        margin-bottom: 20px;
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      .hero h1 span {
+        color: #d4af37;
+        font-style: italic;
+      }
+      .hero p {
+        font-size: 1.2em;
+        opacity: 0.9;
+        margin-bottom: 30px;
+        font-weight: 300;
+        letter-spacing: 1px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 15px 35px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1em;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+      .btn-primary {
+        background: #d4af37;
+        color: #2b2b2b;
+      }
+      .btn-primary:hover {
+        background: #c4a027;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 60px 20px;
+      }
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2.5em;
+        color: #2b2b2b;
+        margin-bottom: 50px;
+        text-align: center;
+        position: relative;
+      }
+      .section-title::after {
+        content: "";
+        display: block;
+        width: 80px;
+        height: 3px;
+        background: #d4af37;
+        margin: 20px auto 0;
+      }
+      .restaurantes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 40px;
+      }
+      .card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+      }
+      .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+      .card-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: #d4af37;
+        color: #2b2b2b;
+        padding: 8px 15px;
+        border-radius: 25px;
+        font-size: 0.85em;
+        font-weight: 600;
+        z-index: 2;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .card-img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+      .card:hover .card-img {
+        transform: scale(1.05);
+      }
+      .card-body {
+        padding: 25px;
+        background: white;
+      }
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8em;
+        color: #2b2b2b;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+      .card-tipo {
+        color: #d4af37;
+        font-size: 0.95em;
+        font-weight: 500;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .estrelas {
+        color: #d4af37;
+        font-size: 1.3em;
+        margin: 15px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .estrelas span:last-child {
+        color: #666;
+        font-size: 0.9em;
+        font-weight: 400;
+        margin-left: 5px;
+      }
+      .card-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+      }
+      .card-actions a {
+        flex: 1;
+        text-align: center;
+        padding: 10px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-size: 0.9em;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .ver {
+        background: #2b2b2b;
+        color: white;
+      }
+      .ver:hover {
+        background: #3d3d3d;
+      }
+      .deletar {
+        background: #fff;
+        color: #ff6b6b;
+        border: 1px solid #ff6b6b;
+      }
+      .deletar:hover {
+        background: #ff6b6b;
+        color: white;
+      }
+      .vazio {
+        text-align: center;
+        padding: 80px 20px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      }
+      .vazio-icon {
+        font-size: 5em;
+        margin-bottom: 20px;
+        opacity: 0.5;
+      }
+      .vazio h2 {
+        font-family: "Playfair Display", serif;
+        color: #2b2b2b;
+        margin-bottom: 15px;
+      }
+      .vazio p {
+        color: #666;
+        margin-bottom: 30px;
+      }
+      .footer {
+        background: #2b2b2b;
+        color: white;
+        text-align: center;
+        padding: 30px;
+        margin-top: 60px;
+      }
+      .footer p {
+        opacity: 0.8;
+        font-size: 0.9em;
+      }
+      .mensagem-erro {
+        background: #ff6b6b;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 20px 0;
+        text-align: center;
+      }
+      .mensagem-sucesso {
+        background: #28a745;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 20px 0;
+        text-align: center;
+      }
+      @media (max-width: 768px) {
         .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 4em;
-            font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 20px;
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-        .hero h1 span {
-            color: #d4af37;
-            font-style: italic;
-        }
-        .hero p {
-            font-size: 1.2em;
-            opacity: 0.9;
-            margin-bottom: 30px;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 15px 35px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1em;
-            font-weight: 500;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        .btn-primary {
-            background: #d4af37;
-            color: #2b2b2b;
-        }
-        .btn-primary:hover {
-            background: #c4a027;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 20px;
-        }
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5em;
-            color: #2b2b2b;
-            margin-bottom: 50px;
-            text-align: center;
-            position: relative;
-        }
-        .section-title::after {
-            content: "";
-            display: block;
-            width: 80px;
-            height: 3px;
-            background: #d4af37;
-            margin: 20px auto 0;
+          font-size: 2.5em;
         }
         .restaurantes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 40px;
+          grid-template-columns: 1fr;
         }
-        .card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            position: relative;
+        .navbar {
+          padding: 15px 20px;
+          flex-direction: column;
+          gap: 10px;
         }
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        .navbar-links a {
+          margin-left: 15px;
+          margin-right: 15px;
         }
-        .card-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: #d4af37;
-            color: #2b2b2b;
-            padding: 8px 15px;
-            border-radius: 25px;
-            font-size: 0.85em;
-            font-weight: 600;
-            z-index: 2;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        body {
+          padding-top: 120px;
         }
-        .card-img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        .card:hover .card-img {
-            transform: scale(1.05);
-        }
-        .card-body {
-            padding: 25px;
-            background: white;
-        }
-        .card-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8em;
-            color: #2b2b2b;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        .card-tipo {
-            color: #d4af37;
-            font-size: 0.95em;
-            font-weight: 500;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .estrelas {
-            color: #d4af37;
-            font-size: 1.3em;
-            margin: 15px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .estrelas span:last-child {
-            color: #666;
-            font-size: 0.9em;
-            font-weight: 400;
-            margin-left: 5px;
-        }
-        .card-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-        .card-actions a {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 0.9em;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .ver {
-            background: #2b2b2b;
-            color: white;
-        }
-        .ver:hover {
-            background: #3d3d3d;
-        }
-        .deletar {
-            background: #fff;
-            color: #ff6b6b;
-            border: 1px solid #ff6b6b;
-        }
-        .deletar:hover {
-            background: #ff6b6b;
-            color: white;
-        }
-        .vazio {
-            text-align: center;
-            padding: 80px 20px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-        .vazio-icon {
-            font-size: 5em;
-            margin-bottom: 20px;
-            opacity: 0.5;
-        }
-        .vazio h2 {
-            font-family: 'Playfair Display', serif;
-            color: #2b2b2b;
-            margin-bottom: 15px;
-        }
-        .vazio p {
-            color: #666;
-            margin-bottom: 30px;
-        }
-        .footer {
-            background: #2b2b2b;
-            color: white;
-            text-align: center;
-            padding: 30px;
-            margin-top: 60px;
-        }
-        .footer p {
-            opacity: 0.8;
-            font-size: 0.9em;
-        }
-        .mensagem-erro {
-            background: #ff6b6b;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        .mensagem-sucesso {
-            background: #28a745;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5em;
-            }
-            .restaurantes-grid {
-                grid-template-columns: 1fr;
-            }
-            .navbar {
-                padding: 15px 20px;
-                flex-direction: column;
-                gap: 10px;
-            }
-            .navbar-links a {
-                margin-left: 15px;
-                margin-right: 15px;
-            }
-            body {
-                padding-top: 120px;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="navbar">
-        <a href="/" class="navbar-brand">Sabor <span>&</span> Nota</a>
-        <div class="navbar-links">
-            <a href="/">Início</a>
-            <a href="/cadastro">Novo Restaurante</a>
-        </div>
+      <a href="/" class="navbar-brand">Sabor <span>&</span> Nota</a>
+      <div class="navbar-links">
+        <a href="/">Início</a>
+        <a href="/cadastro">Novo Restaurante</a>
+      </div>
     </div>
-    
+
     <div class="hero">
-        <div class="hero-content">
-            <a href="/" style="text-decoration: none; color: inherit;">
-                <h1>Sabor <span>&</span> Nota</h1>
-            </a>
-            <p>Descubra os melhores restaurantes e compartilhe suas experiências</p>
-            <div style="margin-top: 30px;">
-                <a href="/cadastro" class="btn btn-primary">➕ Adicionar Restaurante</a>
-            </div>
+      <div class="hero-content">
+        <a href="/" style="text-decoration: none; color: inherit">
+          <h1>Sabor <span>&</span> Nota</h1>
+        </a>
+        <p>Descubra os melhores restaurantes e compartilhe suas experiências</p>
+        <div style="margin-top: 30px">
+          <a href="/cadastro" class="btn btn-primary"
+            >➕ Adicionar Restaurante</a
+          >
         </div>
+      </div>
     </div>
-    
+
     <div class="container">
-        <div th:if="${erro}" class="mensagem-erro" th:text="${erro}"></div>
-        <div th:if="${sucesso}" class="mensagem-sucesso" th:text="${sucesso}"></div>
-        
-        <h2 class="section-title">Nossos Restaurantes</h2>
-        
-        <div class="restaurantes-grid" th:if="${not #lists.isEmpty(restaurantes)}">
-            <div class="card" th:each="rest : ${restaurantes}">
-                <div class="card-badge" th:text="${rest.tipoCozinha != null ? rest.tipoCozinha : 'Gastronomia'}">Gastronomia</div>
-                <img th:src="${rest.fotoUrl != null ? rest.fotoUrl : 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'}" 
-                     class="card-img">
-                <div class="card-body">
-                    <h3 class="card-title" th:text="${rest.nome}">Nome do Restaurante</h3>
-                    <div class="card-tipo" th:text="${rest.tipoCozinha != null ? rest.tipoCozinha : 'Gastronomia'}">Tipo</div>
-                    
-                    <div class="estrelas">
-                        <span th:each="i : ${#numbers.sequence(1,5)}">
-                            <span th:if="${i <= rest.avaliacaoMedia}">★</span>
-                            <span th:if="${i > rest.avaliacaoMedia}">☆</span>
-                        </span>
-                        <span th:text="'(' + ${rest.totalAvaliacoes} + ')'">(0)</span>
-                    </div>
-                    
-                    <div class="card-actions">
-                        <a th:href="@{/restaurante/{id}(id=${rest.id})}" class="ver">Ver detalhes</a>
-                        <a th:href="@{/deletar/{id}(id=${rest.id})}" class="deletar" 
-                           onclick="return confirm('Tem certeza que deseja excluir este restaurante?')">Excluir</a>
-                    </div>
-                </div>
+      <div th:if="${erro}" class="mensagem-erro" th:text="${erro}"></div>
+      <div
+        th:if="${sucesso}"
+        class="mensagem-sucesso"
+        th:text="${sucesso}"
+      ></div>
+
+      <h2 class="section-title">Nossos Restaurantes</h2>
+
+      <div
+        class="restaurantes-grid"
+        th:if="${not #lists.isEmpty(restaurantes)}"
+      >
+        <div class="card" th:each="rest : ${restaurantes}">
+          <div
+            class="card-badge"
+            th:text="${rest.tipoCozinha != null ? rest.tipoCozinha : 'Gastronomia'}"
+          >
+            Gastronomia
+          </div>
+          <img
+            th:src="${rest.fotoUrl != null ? rest.fotoUrl : 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'}"
+            class="card-img"
+          />
+          <div class="card-body">
+            <h3 class="card-title" th:text="${rest.nome}">
+              Nome do Restaurante
+            </h3>
+            <div
+              class="card-tipo"
+              th:text="${rest.tipoCozinha != null ? rest.tipoCozinha : 'Gastronomia'}"
+            >
+              Tipo
             </div>
+
+            <div class="estrelas">
+              <span th:each="i : ${#numbers.sequence(1,5)}">
+                <span th:if="${i <= rest.avaliacaoMedia}">★</span>
+                <span th:if="${i > rest.avaliacaoMedia}">☆</span>
+              </span>
+              <span th:text="'(' + ${rest.totalAvaliacoes} + ')'">(0)</span>
+            </div>
+
+            <div class="card-actions">
+              <a th:href="@{/restaurante/{id}(id=${rest.id})}" class="ver"
+                >Ver detalhes</a
+              >
+              <a
+                th:href="@{/deletar/{id}(id=${rest.id})}"
+                class="deletar"
+                onclick="
+                  return confirm(
+                    'Tem certeza que deseja excluir este restaurante?',
+                  );
+                "
+                >Excluir</a
+              >
+            </div>
+          </div>
         </div>
-        
-        <div class="vazio" th:unless="${not #lists.isEmpty(restaurantes)}">
-            <div class="vazio-icon">🍷</div>
-            <h2>Nenhum restaurante cadastrado</h2>
-            <p>Comece adicionando seu primeiro restaurante e compartilhe suas experiências gastronômicas</p>
-            <a href="/cadastro" class="btn btn-primary">Adicionar Restaurante</a>
-        </div>
+      </div>
+
+      <div class="vazio" th:unless="${not #lists.isEmpty(restaurantes)}">
+        <div class="vazio-icon">🍷</div>
+        <h2>Nenhum restaurante cadastrado</h2>
+        <p>
+          Comece adicionando seu primeiro restaurante e compartilhe suas
+          experiências gastronômicas
+        </p>
+        <a href="/cadastro" class="btn btn-primary">Adicionar Restaurante</a>
+      </div>
     </div>
-    
+
     <div class="footer">
-        <p>© 2024 Sabor & Nota · Todos os direitos reservados</p>
+      <p>© 2026 Sabor & Nota · Todos os direitos reservados</p>
     </div>
-</body>
+  </body>
 </html>

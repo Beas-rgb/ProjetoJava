@@ -1,348 +1,425 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${restaurante.nome} + ' · Sabor & Nota'">Detalhes do Restaurante</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${restaurante.nome} + ' · Sabor & Nota'">
+      Detalhes do Restaurante
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #faf7f2;
-            color: #2c2c2c;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Montserrat", sans-serif;
+        background-color: #faf7f2;
+        color: #2c2c2c;
+      }
+      .navbar {
+        background: rgba(43, 43, 43, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 15px 40px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      }
+      .navbar-brand {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8em;
+        font-weight: 700;
+        color: #d4af37;
+        text-decoration: none;
+      }
+      .navbar-brand:hover {
+        color: #c4a027;
+      }
+      .navbar-brand span {
+        color: white;
+      }
+      .navbar-links a {
+        color: white;
+        text-decoration: none;
+        margin-left: 30px;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+      .navbar-links a:hover {
+        color: #d4af37;
+      }
+      body {
+        padding-top: 80px;
+      }
+      .hero-restaurant {
+        height: 400px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-restaurant img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.7);
+      }
+      .hero-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 60px;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        color: white;
+      }
+      .hero-overlay h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 4em;
+      }
+      .hero-overlay .tipo {
+        font-size: 1.2em;
+        color: #d4af37;
+      }
+      .container {
+        max-width: 1200px;
+        margin: -80px auto 40px;
+        padding: 0 20px;
+        position: relative;
+      }
+      .info-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+      .estrelas-grande {
+        color: #d4af37;
+        font-size: 2em;
+        text-align: center;
+        margin: 20px 0;
+      }
+      .descricao {
+        text-align: center;
+        font-size: 1.1em;
+        font-style: italic;
+        color: #666;
+        max-width: 800px;
+        margin: 30px auto;
+      }
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin: 30px 0;
+      }
+      .info-item {
+        text-align: center;
+        padding: 20px;
+        background: #fcf9f5;
+        border-radius: 15px;
+      }
+      .info-icon {
+        font-size: 2em;
+        color: #d4af37;
+      }
+      .btn-voltar {
+        display: inline-block;
+        padding: 15px 35px;
+        background: #2b2b2b;
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        margin: 20px 0;
+      }
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2.2em;
+        margin: 50px 0 30px;
+        text-align: center;
+      }
+      .itens-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+      }
+      .item-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      }
+      .item-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+      .item-body {
+        padding: 20px;
+      }
+      .item-nome {
+        font-family: "Playfair Display", serif;
+        font-size: 1.3em;
+        font-weight: 600;
+      }
+      .item-preco {
+        color: #d4af37;
+        font-size: 1.3em;
+        font-weight: 700;
+        margin: 10px 0;
+      }
+      .avaliacoes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+      }
+      .avaliacao-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        border-left: 4px solid #d4af37;
+      }
+      .avaliacao-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .avaliacao-prato {
+        font-weight: 600;
+      }
+      .avaliacao-estrelas {
+        color: #d4af37;
+      }
+      .avaliacao-footer {
+        margin-top: 15px;
+        color: #666;
+        font-size: 0.9em;
+      }
+      .mensagem-erro {
+        background: #ff6b6b;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .mensagem-sucesso {
+        background: #28a745;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      @media (max-width: 768px) {
         .navbar {
-            background: rgba(43, 43, 43, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 40px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-        .navbar-brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8em;
-            font-weight: 700;
-            color: #d4af37;
-            text-decoration: none;
-        }
-        .navbar-brand:hover {
-            color: #c4a027;
-        }
-        .navbar-brand span {
-            color: white;
+          padding: 15px 20px;
+          flex-direction: column;
+          gap: 10px;
         }
         .navbar-links a {
-            color: white;
-            text-decoration: none;
-            margin-left: 30px;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        .navbar-links a:hover {
-            color: #d4af37;
+          margin-left: 15px;
+          margin-right: 15px;
         }
         body {
-            padding-top: 80px;
-        }
-        .hero-restaurant {
-            height: 400px;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-restaurant img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(0.7);
-        }
-        .hero-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 60px;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            color: white;
+          padding-top: 120px;
         }
         .hero-overlay h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 4em;
-        }
-        .hero-overlay .tipo {
-            font-size: 1.2em;
-            color: #d4af37;
+          font-size: 2.5em;
         }
         .container {
-            max-width: 1200px;
-            margin: -80px auto 40px;
-            padding: 0 20px;
-            position: relative;
+          margin-top: -40px;
         }
         .info-card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        .estrelas-grande {
-            color: #d4af37;
-            font-size: 2em;
-            text-align: center;
-            margin: 20px 0;
-        }
-        .descricao {
-            text-align: center;
-            font-size: 1.1em;
-            font-style: italic;
-            color: #666;
-            max-width: 800px;
-            margin: 30px auto;
+          padding: 25px;
         }
         .info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 30px 0;
-        }
-        .info-item {
-            text-align: center;
-            padding: 20px;
-            background: #fcf9f5;
-            border-radius: 15px;
-        }
-        .info-icon { font-size: 2em; color: #d4af37; }
-        .btn-voltar {
-            display: inline-block;
-            padding: 15px 35px;
-            background: #2b2b2b;
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            margin: 20px 0;
-        }
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2em;
-            margin: 50px 0 30px;
-            text-align: center;
+          grid-template-columns: 1fr;
         }
         .itens-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
+          grid-template-columns: 1fr;
         }
-        .item-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        }
-        .item-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .item-body { padding: 20px; }
-        .item-nome {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3em;
-            font-weight: 600;
-        }
-        .item-preco {
-            color: #d4af37;
-            font-size: 1.3em;
-            font-weight: 700;
-            margin: 10px 0;
-        }
-        .avaliacoes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .avaliacao-card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            border-left: 4px solid #d4af37;
-        }
-        .avaliacao-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        .avaliacao-prato { font-weight: 600; }
-        .avaliacao-estrelas { color: #d4af37; }
-        .avaliacao-footer {
-            margin-top: 15px;
-            color: #666;
-            font-size: 0.9em;
-        }
-        .mensagem-erro {
-            background: #ff6b6b;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .mensagem-sucesso {
-            background: #28a745;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 15px 20px;
-                flex-direction: column;
-                gap: 10px;
-            }
-            .navbar-links a {
-                margin-left: 15px;
-                margin-right: 15px;
-            }
-            body {
-                padding-top: 120px;
-            }
-            .hero-overlay h1 {
-                font-size: 2.5em;
-            }
-            .container {
-                margin-top: -40px;
-            }
-            .info-card {
-                padding: 25px;
-            }
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            .itens-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="navbar">
-        <a href="/" class="navbar-brand">Sabor <span>&</span> Nota</a>
-        <div class="navbar-links">
-            <a href="/">Início</a>
-            <a href="/cadastro">Novo Restaurante</a>
-        </div>
+      <a href="/" class="navbar-brand">Sabor <span>&</span> Nota</a>
+      <div class="navbar-links">
+        <a href="/">Início</a>
+        <a href="/cadastro">Novo Restaurante</a>
+      </div>
     </div>
-    
+
     <div class="hero-restaurant">
-        <img th:src="${restaurante.fotoUrl != null ? restaurante.fotoUrl : 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'}" 
-             th:alt="${restaurante.nome}">
-        <div class="hero-overlay">
-            <a href="/" style="text-decoration: none; color: white;">
-                <h1 style="font-size: 2em; margin-bottom: 20px; opacity: 0.8;">← Sabor & Nota</h1>
-            </a>
-            <h1 th:text="${restaurante.nome}">Nome do Restaurante</h1>
-            <div class="tipo" th:text="${restaurante.tipoCozinha != null ? restaurante.tipoCozinha : 'Gastronomia'}">Tipo de Cozinha</div>
+      <img
+        th:src="${restaurante.fotoUrl != null ? restaurante.fotoUrl : 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'}"
+        th:alt="${restaurante.nome}"
+      />
+      <div class="hero-overlay">
+        <a href="/" style="text-decoration: none; color: white">
+          <h1 style="font-size: 2em; margin-bottom: 20px; opacity: 0.8">
+            ← Sabor & Nota
+          </h1>
+        </a>
+        <h1 th:text="${restaurante.nome}">Nome do Restaurante</h1>
+        <div
+          class="tipo"
+          th:text="${restaurante.tipoCozinha != null ? restaurante.tipoCozinha : 'Gastronomia'}"
+        >
+          Tipo de Cozinha
         </div>
+      </div>
     </div>
-    
+
     <div class="container">
-        <div th:if="${erro}" class="mensagem-erro" th:text="${erro}"></div>
-        <div th:if="${sucesso}" class="mensagem-sucesso" th:text="${sucesso}"></div>
-        
-        <div class="info-card">
-            <div class="estrelas-grande">
+      <div th:if="${erro}" class="mensagem-erro" th:text="${erro}"></div>
+      <div
+        th:if="${sucesso}"
+        class="mensagem-sucesso"
+        th:text="${sucesso}"
+      ></div>
+
+      <div class="info-card">
+        <div class="estrelas-grande">
+          <span th:each="i : ${#numbers.sequence(1,5)}">
+            <span th:if="${i <= restaurante.avaliacaoMedia}">★</span>
+            <span th:if="${i > restaurante.avaliacaoMedia}">☆</span>
+          </span>
+          <span
+            style="font-size: 0.5em; color: #666"
+            th:text="'(' + ${restaurante.totalAvaliacoes} + ' avaliações)'"
+          ></span>
+        </div>
+
+        <p
+          class="descricao"
+          th:text="${restaurante.descricao != null ? restaurante.descricao : 'Sem descrição disponível'}"
+        ></p>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-icon">📍</div>
+            <div><strong>Endereço</strong></div>
+            <div
+              th:text="${restaurante.endereco != null ? restaurante.endereco : 'Não informado'}"
+            ></div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">📞</div>
+            <div><strong>Telefone</strong></div>
+            <div
+              th:text="${restaurante.telefone != null ? restaurante.telefone : 'Não informado'}"
+            ></div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">💰</div>
+            <div><strong>Preço Médio</strong></div>
+            <div
+              th:text="${restaurante.precoMedio != null ? 'R$ ' + #numbers.formatDecimal(restaurante.precoMedio, 1, 2) : 'Não informado'}"
+            ></div>
+          </div>
+        </div>
+
+        <div style="text-align: center">
+          <a href="/" class="btn-voltar">← Voltar para lista</a>
+        </div>
+      </div>
+
+      <h2 class="section-title">🍽️ Cardápio</h2>
+
+      <div th:if="${not #lists.isEmpty(cardapios)}">
+        <div th:each="cardapio : ${cardapios}">
+          <h3 style="margin: 30px 0 20px" th:text="${cardapio.nomeCardapio}">
+            Categoria
+          </h3>
+          <div class="itens-grid">
+            <div class="item-card" th:each="item : ${cardapio.itens}">
+              <img
+                th:src="${item.fotoUrl != null ? item.fotoUrl : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'}"
+              />
+              <div class="item-body">
+                <div class="item-nome" th:text="${item.nome}">
+                  Nome do Prato
+                </div>
+                <div
+                  style="color: #666; margin: 10px 0"
+                  th:text="${item.descricao != null ? item.descricao : 'Sem descrição'}"
+                >
+                  Descrição
+                </div>
+                <div
+                  class="item-preco"
+                  th:text="'R$ ' + ${#numbers.formatDecimal(item.preco, 1, 2)}"
+                >
+                  R$ 0,00
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        th:unless="${not #lists.isEmpty(cardapios)}"
+        style="text-align: center; padding: 60px"
+      >
+        <p>Nenhum prato cadastrado no cardápio.</p>
+      </div>
+
+      <h2 class="section-title">⭐ Avaliações</h2>
+
+      <div th:if="${not #lists.isEmpty(avaliacoes)}">
+        <div class="avaliacoes-grid">
+          <div class="avaliacao-card" th:each="av : ${avaliacoes}">
+            <div class="avaliacao-header">
+              <span class="avaliacao-prato" th:text="${av.nomePrato}"
+                >Prato</span
+              >
+              <span class="avaliacao-estrelas">
                 <span th:each="i : ${#numbers.sequence(1,5)}">
-                    <span th:if="${i <= restaurante.avaliacaoMedia}">★</span>
-                    <span th:if="${i > restaurante.avaliacaoMedia}">☆</span>
+                  <span th:if="${i <= av.nota}">★</span>
+                  <span th:if="${i > av.nota}">☆</span>
                 </span>
-                <span style="font-size: 0.5em; color: #666;" th:text="'(' + ${restaurante.totalAvaliacoes} + ' avaliações)'"></span>
+              </span>
             </div>
-            
-            <p class="descricao" th:text="${restaurante.descricao != null ? restaurante.descricao : 'Sem descrição disponível'}"></p>
-            
-            <div class="info-grid">
-                <div class="info-item">
-                    <div class="info-icon">📍</div>
-                    <div><strong>Endereço</strong></div>
-                    <div th:text="${restaurante.endereco != null ? restaurante.endereco : 'Não informado'}"></div>
-                </div>
-                <div class="info-item">
-                    <div class="info-icon">📞</div>
-                    <div><strong>Telefone</strong></div>
-                    <div th:text="${restaurante.telefone != null ? restaurante.telefone : 'Não informado'}"></div>
-                </div>
-                <div class="info-item">
-                    <div class="info-icon">💰</div>
-                    <div><strong>Preço Médio</strong></div>
-                    <div th:text="${restaurante.precoMedio != null ? 'R$ ' + #numbers.formatDecimal(restaurante.precoMedio, 1, 2) : 'Não informado'}"></div>
-                </div>
+            <p
+              style="font-style: italic; margin: 15px 0"
+              th:text="${av.comentario != null ? av.comentario : 'Sem comentário'}"
+            ></p>
+            <div class="avaliacao-footer">
+              <span
+                th:if="${av.preco != null}"
+                th:text="'R$ ' + ${#numbers.formatDecimal(av.preco, 1, 2)}"
+                >R$ 0,00</span
+              >
+              <span th:unless="${av.preco != null}">Preço não informado</span>
+              <span
+                th:text="${#temporals.format(av.dataAvaliacao, 'dd/MM/yyyy')}"
+                >01/01/2024</span
+              >
             </div>
-            
-            <div style="text-align: center;">
-                <a href="/" class="btn-voltar">← Voltar para lista</a>
-            </div>
+          </div>
         </div>
-        
-        <h2 class="section-title">🍽️ Cardápio</h2>
-        
-        <div th:if="${not #lists.isEmpty(cardapios)}">
-            <div th:each="cardapio : ${cardapios}">
-                <h3 style="margin: 30px 0 20px;" th:text="${cardapio.nomeCardapio}">Categoria</h3>
-                <div class="itens-grid">
-                    <div class="item-card" th:each="item : ${cardapio.itens}">
-                        <img th:src="${item.fotoUrl != null ? item.fotoUrl : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'}">
-                        <div class="item-body">
-                            <div class="item-nome" th:text="${item.nome}">Nome do Prato</div>
-                            <div style="color: #666; margin: 10px 0;" th:text="${item.descricao != null ? item.descricao : 'Sem descrição'}">Descrição</div>
-                            <div class="item-preco" th:text="'R$ ' + ${#numbers.formatDecimal(item.preco, 1, 2)}">R$ 0,00</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div th:unless="${not #lists.isEmpty(cardapios)}" style="text-align: center; padding: 60px;">
-            <p>Nenhum prato cadastrado no cardápio.</p>
-        </div>
-        
-        <h2 class="section-title">⭐ Avaliações</h2>
-        
-        <div th:if="${not #lists.isEmpty(avaliacoes)}">
-            <div class="avaliacoes-grid">
-                <div class="avaliacao-card" th:each="av : ${avaliacoes}">
-                    <div class="avaliacao-header">
-                        <span class="avaliacao-prato" th:text="${av.nomePrato}">Prato</span>
-                        <span class="avaliacao-estrelas">
-                            <span th:each="i : ${#numbers.sequence(1,5)}">
-                                <span th:if="${i <= av.nota}">★</span>
-                                <span th:if="${i > av.nota}">☆</span>
-                            </span>
-                        </span>
-                    </div>
-                    <p style="font-style: italic; margin: 15px 0;" th:text="${av.comentario != null ? av.comentario : 'Sem comentário'}"></p>
-                    <div class="avaliacao-footer">
-                        <span th:if="${av.preco != null}" th:text="'R$ ' + ${#numbers.formatDecimal(av.preco, 1, 2)}">R$ 0,00</span>
-                        <span th:unless="${av.preco != null}">Preço não informado</span>
-                        <span th:text="${#temporals.format(av.dataAvaliacao, 'dd/MM/yyyy')}">01/01/2024</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div th:unless="${not #lists.isEmpty(avaliacoes)}" style="text-align: center; padding: 60px;">
-            <p>Nenhuma avaliação ainda.</p>
-        </div>
+      </div>
+
+      <div
+        th:unless="${not #lists.isEmpty(avaliacoes)}"
+        style="text-align: center; padding: 60px"
+      >
+        <p>Nenhuma avaliação ainda.</p>
+      </div>
     </div>
-</body>
+  </body>
 </html>

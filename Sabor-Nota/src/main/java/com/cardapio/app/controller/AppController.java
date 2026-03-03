@@ -74,7 +74,7 @@ public class AppController {
             restaurante.setPrecoMedio(precoMedio);
             restaurante.setAvaliacaoMedia(0.0);
             restaurante.setTotalAvaliacoes(0);
-            
+
             restaurante = restauranteRepository.save(restaurante);
 
             double somaNotas = 0.0;
@@ -85,20 +85,23 @@ public class AppController {
                 List<String> descricoesValidas = new ArrayList<>();
                 List<BigDecimal> precosValidos = new ArrayList<>();
                 List<Integer> notasValidas = new ArrayList<>();
-                
+
                 for (int i = 0; i < itemNome.size(); i++) {
                     String nomeItem = itemNome.get(i);
                     if (nomeItem != null && !nomeItem.trim().isEmpty()) {
                         nomesValidos.add(nomeItem.trim());
-                        descricoesValidas.add(itemDescricao != null && i < itemDescricao.size() ? 
-                                             (itemDescricao.get(i) != null ? itemDescricao.get(i).trim() : "") : "");
-                        precosValidos.add(itemPreco != null && i < itemPreco.size() && itemPreco.get(i) != null ? 
-                                         itemPreco.get(i) : BigDecimal.ZERO);
-                        notasValidas.add(itemNota != null && i < itemNota.size() && itemNota.get(i) != null ? 
-                                        itemNota.get(i) : 3);
+                        descricoesValidas.add(itemDescricao != null && i < itemDescricao.size()
+                                ? (itemDescricao.get(i) != null ? itemDescricao.get(i).trim() : "")
+                                : "");
+                        precosValidos.add(
+                                itemPreco != null && i < itemPreco.size() && itemPreco.get(i) != null ? itemPreco.get(i)
+                                        : BigDecimal.ZERO);
+                        notasValidas.add(
+                                itemNota != null && i < itemNota.size() && itemNota.get(i) != null ? itemNota.get(i)
+                                        : 3);
                     }
                 }
-                
+
                 if (!nomesValidos.isEmpty()) {
                     Cardapio cardapio = new Cardapio();
                     cardapio.setNomeCardapio("Cardápio Principal");
@@ -118,7 +121,7 @@ public class AppController {
                         item = itemRepository.save(item);
 
                         Integer nota = notasValidas.get(i);
-                        
+
                         Avaliacao avaliacao = new Avaliacao();
                         avaliacao.setNomePrato(item.getNome());
                         avaliacao.setComentario(item.getDescricao());
